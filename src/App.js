@@ -1,9 +1,8 @@
 import React, { Component } from 'react'
-import { Link } from 'react-router-dom'
 import { Route } from 'react-router-dom'
 import Search from './Search'
 import Books from './Books'
-// import * as BooksAPI from './BooksAPI'
+import * as BooksAPI from './BooksAPI'
 import './App.css'
 
 class BooksApp extends Component {
@@ -15,6 +14,14 @@ class BooksApp extends Component {
      * pages, as well as provide a good URL they can bookmark and share.
      */
     // showSearchPage: false
+    books: [],
+    ourBooks: []
+  }
+
+  componentDidMount(){
+    BooksAPI.getAll().then((ourBooks) => {
+      this.setState({ ourBooks })
+    })
   }
 
   render() {
@@ -24,7 +31,7 @@ class BooksApp extends Component {
           <Search />
         )}/>
         <Route exact path='/' render={({ history }) => (
-          <Books />
+          <Books ourBooks={this.state.ourBooks}/>
         )}/>
       </div>
     )}
