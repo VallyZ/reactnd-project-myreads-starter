@@ -28,7 +28,7 @@ class BooksApp extends Component {
     return (
       <div className="app">
         <Route path='/search' render={() => (
-          <Search />
+          <Search ourBooks={this.state.ourBooks}/>
         )}/>
         <Route exact path='/' render={({ history }) => (
           <Books ourBooks={this.state.ourBooks}/>

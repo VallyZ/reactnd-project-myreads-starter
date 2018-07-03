@@ -14,6 +14,9 @@ class Books extends Component {
   }
 
   componentDidMount(){
+    let currentlyReading=this.props.ourBooks.filter(book=>book.shelf==="currentlyReading");
+    let wantToRead=this.props.ourBooks.filter(book=>book.shelf==="wantToRead");
+    let read=this.props.ourBooks.filter(book=>book.shelf==="read");
     this.setState({ currentlyReading: currentlyReading,wantToRead: wantToRead,read: read });
 
     console.log(this.props)
@@ -21,9 +24,6 @@ class Books extends Component {
   }
 
   render(){
-    let currentlyReading=this.props.ourBooks.filter(book=>book.shelf==="currentlyReading");
-    let wantToRead=this.props.ourBooks.filter(book=>book.shelf==="wantToRead");
-    let read=this.props.ourBooks.filter(book=>book.shelf==="read");
     return(
       <div className="list-books">
         <div className="list-books-title">
