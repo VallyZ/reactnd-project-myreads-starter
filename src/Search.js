@@ -7,23 +7,18 @@ import * as BooksAPI from './BooksAPI'
 class Search extends Component {
   state = {
     query: '',
-    // showingBooks:[]
+    showingBooks:[]
   }
 
   updateQuery = (query) => {
     this.setState({ query: query.trim() });
   }
 
-  // componentDidMount(){
-  //   BooksAPI.update().then((showingBooks)=>{
-  //     this.setState(showingBooks:showingBooks)
-  //   })
-  // }
 
   render(){
   let showingBooks
   if (this.props.query){
-    const match=new RegExp(escapeRegExp(this.porps.query),'i')
+    const match=new RegExp(escapeRegExp(this.props.ourBooks),'i')
     let showingBooks=this.props.ourBooks.filter((book)=>match.test( JSON.stringify(book) ))
   }else {
     showingBooks=[]
@@ -34,17 +29,12 @@ class Search extends Component {
       <div className="search-books-bar">
         <Link to='/' className="close-search">Close</Link>
         <div className="search-books-input-wrapper">
-        {/*
-          NOTES: The search from BooksAPI is limited to a particular set of search terms.
-          You can find these search terms here:
-          https://github.com/udacity/reactnd-project-myreads-starter/blob/master/SEARCH_TERMS.md
-
-          However, remember that the BooksAPI.search method DOES search by title or author. So, don't worry if
-          you don't find a specific author or title. Every search is limited by search terms.
-          */}
-          <input type="text" placeholder="Search by title or author"
+        {}
+          <input
+            type="text"
+            placeholder="Search by title or author"
             value={this.state.query}
-            onChange={event=>this.updateQuery(event.target.value)}/>
+            onChange={(event)=>this.updateQuery(event.target.value)}/>
           </div>
         </div>
         <div className="search-books-results">

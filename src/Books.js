@@ -15,25 +15,25 @@ class Books extends Component {
     ourBooks: PropTypes.array.isRequired,
   }
 
-  removeBook(book){
+  removeBook = (book) => {
         let arrayBook=[];
         let index=-1;
 
         if (book.shelf === "currentlyReading")  {
-            index=this.props.currentlyReading.indexOf(book);
-            arrayBook=this.props.currentlyReading;
+            index=this.state.currentlyReading.indexOf(book);
+            arrayBook=this.state.currentlyReading;
         } else if( book.shelf === "wantToRead" ){
-            index=this.props.wantToRead.indexOf(book);
-            arrayBook=this.props.wantToRead;
+            index=this.state.wantToRead.indexOf(book);
+            arrayBook=this.state.wantToRead;
         } else {
-            index=this.props.read.indexOf(book);
-            arrayBook=this.props.read;
+            index=this.state.read.indexOf(book);
+            arrayBook=this.state.read;
         }
         arrayBook.splice(index,1);
         return arrayBook;
     }
 
-    updateShelf(fromShelf,newArray){
+    updateShelf = (fromShelf,newArray) =>{
         if (fromShelf === "currentlyReading")  {
          this.setState({ currentlyReading: newArray})
        } else if( fromShelf === "wantToRead" ){
@@ -43,7 +43,7 @@ class Books extends Component {
         }
     }
 
-    updateToShelf(toShelf,toNewArray){
+    updateToShelf = (toShelf,toNewArray) => {
         if (toShelf === "currentlyReading")  {
          this.setState({ currentlyReading: toNewArray})
        } else if( toShelf === "wantToRead" ){
@@ -53,7 +53,7 @@ class Books extends Component {
         }
     }
 
-    onChangeShelf(book,event){
+    onChangeShelf = (book,event) => {
         let tmpBook=book;
         let fromShelf=book.shelf;
         let toShelf=event.target.value;
@@ -64,19 +64,19 @@ class Books extends Component {
 
             if (toShelf === "currentlyReading")  {
                    this.updateShelf(fromShelf,newArray);
-                   toNewArray=this.props.currentlyReading;
+                   toNewArray=this.state.currentlyReading;
                    book.shelf=toShelf;
                    toNewArray.push(book);
                    this.updateToShelf(toShelf,toNewArray);
             }else if( toShelf === "wantToRead" ){
                 this.updateShelf(fromShelf,newArray);
-                toNewArray=this.props.wantToRead;
+                toNewArray=this.state.wantToRead;
                 book.shelf=toShelf;
                 toNewArray.push(book);
                 this.updateToShelf(toShelf,toNewArray);
             }else {
                 this.updateShelf(fromShelf,newArray);
-                toNewArray=this.props.read;
+                toNewArray=this.state.read;
                 book.shelf=toShelf;
                 toNewArray.push(book);
                 this.updateToShelf(toShelf,toNewArray);
@@ -99,9 +99,9 @@ class Books extends Component {
         </div>
         <div className="list-books-content">
           <div>
-            <Shelf title='Currently Reading' currentlyReading={this.state.currentlyReading} wantToRead={this.state.wantToRead} read={this.state.read} shelf={currentlyReading=this.props.ourBooks.filter(book=>book.shelf==="currentlyReading")}/>
-            <Shelf title='Want to Read' currentlyReading={this.state.wantToRead} wantToRead={this.state.wantToRead} read={this.state.read} shelf={wantToRead=this.props.ourBooks.filter(book=>book.shelf==="wantToRead")}/>
-            <Shelf title='read' currentlyReading={this.state.read} wantToRead={this.state.wantToRead} read={this.state.read} shelf={read=this.props.ourBooks.filter(book=>book.shelf==="read")}/>
+            <Shelf title='Currently Reading' onChangeShelf={this.onChangeShelf} currentlyReading={this.props.currentlyReading} wantToRead={this.props.wantToRead} read={this.props.read} shelf={currentlyReading=this.props.ourBooks.filter(book=>book.shelf==="currentlyReading")}/>
+            <Shelf title='Want to Read' onChangeShelf={this.onChangeShelf} currentlyReading={this.props.wantToRead} wantToRead={this.props.wantToRead} read={this.props.read} shelf={wantToRead=this.props.ourBooks.filter(book=>book.shelf==="wantToRead")}/>
+            <Shelf title='read' onChangeShelf={this.onChangeShelf} currentlyReading={this.props.read} wantToRead={this.props.wantToRead} read={this.props.read} shelf={read=this.props.ourBooks.filter(book=>book.shelf==="read")}/>
           </div>
         </div>
         <div className="open-search">
