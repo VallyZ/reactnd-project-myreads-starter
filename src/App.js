@@ -14,6 +14,9 @@ class BooksApp extends Component {
   componentWillMount(){
     BooksAPI.getAll().then((ourBooks) => {
       this.setState({ ourBooks })
+    }),
+    BooksAPI.search().then((books)=>{
+      this.setState({ books })
     })
   }
 
@@ -21,7 +24,7 @@ class BooksApp extends Component {
     return (
       <div className="app">
         <Route path='/search' render={() => (
-          <Search ourBooks={this.state.ourBooks}/>
+          <Search books={this.state.books} />
         )}/>
         <Route exact path='/' render={({ history }) => (
           <Books ourBooks={this.state.ourBooks}/>
