@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import escapeRegExp from 'escape-string-regexp'
 import BooksApp from './App'
-import SearchBooks from './SearchBooks'
 import * as BooksAPI from './BooksAPI'
 
 class Search extends Component {
@@ -43,19 +42,15 @@ class Search extends Component {
           </div>
         </div>
         <div className="search-books-results">
-        <p>{this.state.query}</p>
-        <div>
-        <SearchBooks results={this.state.showingBooks}/>
-        </div>
           <ol className="books-grid"></ol>
         </div>
         <div className="search-books-results">
           <ol className="books-grid">
-          {this.state.showingBooks.map(book=>
+          {this.state.showingBooks && this.state.showingBooks.map(book=>
             <li key={book.id}>
                 <div className="book">
                 <div className="book-top">
-                  <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url('${book.imageLinks.thumbnail}')` }}></div>
+                  <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url('${book.imageLinks && book.imageLinks.thumbnail}')` }}></div>
                   <div className="book-shelf-changer">
                     <select id="selector" value={book.shelf} onChange={(event)=>this.props.onChangeShelf(book, event)}>
                       <option value="none" disabled>Move to...</option>
