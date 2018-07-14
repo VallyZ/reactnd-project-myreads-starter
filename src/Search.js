@@ -13,10 +13,14 @@ class Search extends Component {
   handleInputChange = (query) => {
     this.setState({ query: this.search.value},
        () => {
-          BooksAPI.search(this.state.query).then((showingBooks)=>{this.setState({showingBooks:showingBooks})})
+          BooksAPI.search(this.state.query).then((showingBooks)=>{showingBooks.map((book)=>book.shelf="none"),this.setState({showingBooks:showingBooks})})
     })
   }
 
+  change = (book,shelf)=> {
+    BooksAPI.update(book, shelf)
+        .then(r => console.log('Shelf updated', r))
+  }
 
   render(){
   let showingBooks
@@ -52,8 +56,8 @@ class Search extends Component {
                 <div className="book-top">
                   <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url('${book.imageLinks && book.imageLinks.thumbnail}')` }}></div>
                   <div className="book-shelf-changer">
-                    <select id="selector" value={book.shelf} onChange={(event)=>this.props.onChangeShelf(book, event)}>
-                      <option value="none" disabled>Move to...</option>
+                    <select id="selector" value={book.shelf} onChange={this.change}>
+                      <option value="move" disabled>Move to...</option>
                       <option value="currentlyReading">Currently Reading</option>
                       <option value="wantToRead">Want to Read</option>
                       <option value="read">Read</option>

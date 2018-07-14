@@ -14,7 +14,7 @@ class BooksApp extends Component {
     read : []
   }
 
-  componentWillMount(){
+  componentDidMount(){
     BooksAPI.getAll().then((ourBooks) => {
       this.setState({ ourBooks })
     }),
@@ -93,6 +93,28 @@ class BooksApp extends Component {
             let newArray=this.removeBook(book);
             book.shelf="none";
             this.updateShelf(fromShelf,newArray);
+        } else if (event.target.value !== book.shelf && book.shelf ==="none"){
+          let newArray=this.removeBook(book);
+
+          if (toShelf === "currentlyReading")  {
+                 this.updateShelf(fromShelf,newArray);
+                 toNewArray=this.state.currentlyReading;
+                 book.shelf=toShelf;
+                 toNewArray.push(book);
+                 this.updateToShelf(toShelf,toNewArray);
+          }else if( toShelf === "wantToRead" ){
+              this.updateShelf(fromShelf,newArray);
+              toNewArray=this.state.wantToRead;
+              book.shelf=toShelf;
+              toNewArray.push(book);
+              this.updateToShelf(toShelf,toNewArray);
+          }else {
+              this.updateShelf(fromShelf,newArray);
+              toNewArray=this.state.read;
+              book.shelf=toShelf;
+              toNewArray.push(book);
+              this.updateToShelf(toShelf,toNewArray);
+          }
         }
     }
 
