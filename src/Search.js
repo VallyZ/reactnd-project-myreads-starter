@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
-import escapeRegExp from 'escape-string-regexp'
 import BooksApp from './App'
 import * as BooksAPI from './BooksAPI'
+import SearchedBook from './SearchedBook'
 
 class Search extends Component {
   state = {
@@ -10,65 +10,47 @@ class Search extends Component {
     showingBooks:[]
   }
 
-  handleInputChange = (query) => {
-    this.setState({ query: this.search.value},
-       () => {
-          BooksAPI.search(this.state.query).then((showingBooks)=>{showingBooks.map((book)=>book.shelf="none"),this.setState({showingBooks:showingBooks})})
-    })
-  }
-
-  change = (book,shelf)=> {
-    BooksAPI.update(book, shelf)
-        .then(r => console.log('Shelf updated', r))
+  updateQuery = (query) => {
+    this.setState({query: query})
+    let showingBooks = []
+    if (query) {
+      BooksAPI.search(query).then(response => {
+        if (response.length) {
+          showingBooks = response.map(b => {
+            const index = this.props.books.findIndex(c => c.id === b.id)
+            if( index >= 0 ) {
+              return this.props.books[index]
+            } else {
+              return b
+            }
+          })
+        }
+        this.setState({showingBooks})
+      })
+    }
+    else {
+      this.setState({showingBooks})
+    }
   }
 
   render(){
-  let showingBooks
-  if (this.props.query){
-    const match=new RegExp(escapeRegExp(this.props.books),'i')
-    let showingBooks=this.props.books.filter((book)=>match.test( JSON.stringify(book) ))
-  }else {
-    showingBooks=[]
-  }
-
   return(
     <div className="search-books">
       <div className="search-books-bar">
         <Link to='/' className="close-search">Close</Link>
         <div className="search-books-input-wrapper">
-        {}
-          <input
-            type="text"
-            placeholder="Search by title or author"
-            value={this.state.query}
-            ref={input => this.search = input}
-            onChange={this.handleInputChange}/>
+          <input type="text"
+                 placeholder="Search by title or author"
+                 value={this.state.query}
+                 onChange={(event) => this.updateQuery(event.target.value)}/>
           </div>
         </div>
         <div className="search-books-results">
-          <ol className="books-grid"></ol>
-        </div>
-        <div className="search-books-results">
           <ol className="books-grid">
-          {this.state.showingBooks && this.state.showingBooks.map(book=>
-            <li key={book.id}>
-                <div className="book">
-                <div className="book-top">
-                  <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url('${book.imageLinks && book.imageLinks.thumbnail}')` }}></div>
-                  <div className="book-shelf-changer">
-                    <select id="selector" value={book.shelf} onChange={this.change}>
-                      <option value="move" disabled>Move to...</option>
-                      <option value="currentlyReading">Currently Reading</option>
-                      <option value="wantToRead">Want to Read</option>
-                      <option value="read">Read</option>
-                    </select>
-                  </div>
-                </div>
-                <div className="book-title">{book.title}</div>
-                <div className="book-authors">{book.authors}</div>
-              </div>
-            </li>
-          )}
+          {this.state.showingBooks.map((book, i) => (
+            <Book key={i} book={book}
+                  onChangeShelf={this.props.onChangeShelf}/>
+          ))}
           </ol>
         </div>
       </div>
