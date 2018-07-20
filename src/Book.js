@@ -21,7 +21,7 @@ class Book extends Component {
 
   render(){
     return(
-      <li key={this.props.key}>
+      <li key={this.props.id}>
           <div className="book">
           <div className="book-top">
             <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url('${this.props.book.imageLinks && this.props.book.imageLinks.thumbnail}')` }}></div>

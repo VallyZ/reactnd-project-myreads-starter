@@ -49,6 +49,7 @@ class Search extends Component {
           {this.state.showingBooks.map((book, i) => (
             <Book book={book}
                   key={i}
+                  id={i}
                   onChangeShelf={this.props.onChangeShelf}/>
           ))}
           </ol>
