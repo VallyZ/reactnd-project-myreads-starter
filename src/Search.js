@@ -1,8 +1,7 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
-import BooksApp from './App'
 import * as BooksAPI from './BooksAPI'
-import SearchedBook from './SearchedBook'
+import Book from './Book'
 
 class Search extends Component {
   state = {
@@ -48,7 +47,8 @@ class Search extends Component {
         <div className="search-books-results">
           <ol className="books-grid">
           {this.state.showingBooks.map((book, i) => (
-            <Book key={i} book={book}
+            <Book book={book}
+                  key={i}
                   onChangeShelf={this.props.onChangeShelf}/>
           ))}
           </ol>

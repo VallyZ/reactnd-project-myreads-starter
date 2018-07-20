@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
-import Book from './SearchedBook'
+import Book from './Book'
 
 class Books extends Component {
   updateBook = (book, shelf) => {
