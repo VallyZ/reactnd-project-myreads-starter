@@ -12,7 +12,7 @@ class BooksApp extends Component {
 
   updateShelf = (book, shelf) => {
     let books;
-    if (this.state.books.findIndex(b => b.id === book.id) > 0) {
+    if (this.state.books.findIndex(b => b.id === book.id) >= 0) {
       books = this.state.books.map(b => {
         if (b.id === book.id) {
           return {...book, shelf}
