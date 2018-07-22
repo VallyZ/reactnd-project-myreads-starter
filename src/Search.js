@@ -16,9 +16,11 @@ class Search extends Component {
       BooksAPI.search(query).then(response => {
         if (response.length) {
           showingBooks = response.map(b => {
-            const index = this.props.books.findIndex(c => c.id === b.id)
+            b.shelf = "none"
+            const index = this.props.books.findIndex(c => c.id === b.id);
             if( index >= 0 ) {
-              return this.props.books[index]
+              b.shelf=this.props.books[index].shelf
+              return b;
             } else {
               return b
             }
@@ -48,6 +50,7 @@ class Search extends Component {
           <ol className="books-grid">
           {this.state.showingBooks.map((book, i) => (
             <Book book={book}
+                  books={this.props.books}
                   key={i}
                   id={i}
                   onChangeShelf={this.props.onChangeShelf}/>
